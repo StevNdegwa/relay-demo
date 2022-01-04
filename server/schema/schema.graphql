@@ -1,0 +1,83 @@
+type Query {
+  user(id: ID): User
+  race(id: ID): Race
+  viewer: User
+
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Fetches objects given their IDs"""
+  nodes(
+    """The IDs of objects"""
+    ids: [ID!]!
+  ): [Node]!
+}
+
+"""A user who loves to run"""
+type User implements Node {
+  """The ID of an object"""
+  id: ID!
+
+  """The name of the user"""
+  username: String
+  email: String
+
+  """The races for a specific user"""
+  races(after: String, first: Int, before: String, last: Int): RaceConnection
+}
+
+"""An object with an ID"""
+interface Node {
+  """The id of the object."""
+  id: ID!
+}
+
+"""A connection to a list of items."""
+type RaceConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [RaceEdge]
+}
+
+"""Information about pagination in a connection."""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+}
+
+"""An edge in a connection."""
+type RaceEdge {
+  """The item at the end of the edge"""
+  node: Race
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+type Race implements Node {
+  """The ID of an object"""
+  id: ID!
+
+  """Date of the race"""
+  date: String
+
+  """Type of race"""
+  type: String
+
+  """Finish time of the race"""
+  time: String
+}
